@@ -1,0 +1,65 @@
+---
+title: "Máquinas de estado de pedido, cuenta y pago"
+description: "Consulta los estados validos de Cuenta, Pedido, Pago digital, Pickup y Mesa en Menny. Cada transicion esta controlada y las ilegales se bloquean y auditan."
+sidebarTitle: "Estados"
+---
+
+Menny usa maquinas de estado explicitas para controlar el ciclo de vida de cuentas, pedidos, pagos y mesas. Cada transicion es validada y las transiciones ilegales se bloquean y registran en el log de auditoria. En esta pagina encontraras los flujos completos de cada entidad.
+
+## Cuenta (Bill)
+
+El ciclo de una cuenta tiene tres estados principales:
+
+1. `open`: la cuenta esta activa. Los comensales pueden pedir y agregar items.
+2. `closed`: la cuenta se cerro. Puede cerrarse sin haberse pagado, por ejemplo cuando el staff liquida la mesa.
+3. `paid`: estado terminal financiero. Se alcanza cuando todos los items seleccionados para pago estan liquidados.
+
+Si hay un intento de pago en vuelo, la cuenta no se puede reabrir. Los items pagados se bloquean inmediatamente para todos los participantes.
+
+## Pedido (Order)
+
+Un pedido atraviesa estos estados en orden:
+
+1. `draft`: el comensal o mesero esta armando el pedido.
+2. `submitted`: se envio a la cocina o estacion.
+3. `accepted`: el staff confirmo que lo recibio.
+4. `in_progress`: la estacion comenzo a prepararlo.
+5. `ready`: el pedido esta listo para servirse.
+6. `served`: el pedido ya fue entregado a la mesa.
+
+Un pedido nunca cambia de cuenta. Mientras este en `draft`, comensal y mesero pueden editarlo simultaneamente con concurrencia de ultima escritura valida silenciosa. Una vez en `submitted`, ya no es editable.
+
+## Pago digital (Payment)
+
+Los pagos digitales en la app siguen este flujo:
+
+1. `pending`: se inicio el pago.
+2. `processing`: Stripe esta procesando la transaccion.
+3. `requires_action`: el comensal debe completar un paso adicional (por ejemplo, 3D Secure).
+
+El estado terminal confirmado llega por webhook de Stripe. Menny deduplica webhooks con `Payments::StripeWebhookEvent` para evitar pagos duplicados.
+
+## Pickup
+
+El flujo de pickup tiene su propia maquina de estados, separada de dine-in:
+
+1. `ready_for_pickup`: el pedido esta listo para recogerse.
+2. `picked_up`: el comensal ya recogio su pedido.
+3. `no_show`: el comensal no llego a recogerlo.
+
+Si el pago prepago digital falla, el pedido cae a pago en tienda sin invalidarse. El ETA es manual, asignado por el staff.
+
+## Mesa (Table)
+
+Las mesas tienen cuatro estados:
+
+1. `available`: libre para asignar.
+2. `occupied`: se marca automaticamente al consumirse la primera cuenta.
+3. `reserved`: bloqueada para una reservacion.
+4. `disabled`: fuera de servicio.
+
+Una mesa solo vuelve a `available` por liberacion manual del staff. No se libera automaticamente al cerrar una cuenta.
+
+<Warning>
+  Todas las transiciones ilegales estan bloqueadas y auditadas en `Event`. No puedes forzar un cambio de estado fuera de las transiciones validas.
+</Warning>

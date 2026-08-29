@@ -1,0 +1,79 @@
+---
+title: "Historia inmutable con la bitácora de eventos"
+description: "Menny registra cada cambio importante como un Evento inmutable. Aprende cómo funciona la bitácora de auditoría, qué cubre y cómo usarla para diagnosticar disputas operativas."
+sidebarTitle: "Eventos y auditoría"
+---
+
+En Menny, `Event` es la fuente única e inmutable para visibilidad de negocio y auditabilidad. No existe un stream separado de audit log: todo lo que necesitas saber sobre quién hizo qué, cuándo y con qué resultado, vive en un solo lugar.
+
+## Qué es un Evento
+
+Un Evento es un registro inmutable que describe un cambio en tu restaurante. Cada evento tiene:
+
+- **action**: qué pasó (por ejemplo, `create_record`, `update_record`, `soft_destroy_record`).
+- **aggregate**: el objeto afectado (polimórfico, puede ser una cuenta, un pedido, una mesa, etc.).
+- **actor**: quién lo hizo (usuario, staff, o nulo si fue un job automatizado).
+- **payload**: los datos relevantes del cambio.
+- **location\_id**: la sucursal donde ocurrió.
+
+Los eventos se crean automáticamente gracias al concern `Eventable`, que incluyen casi todos los modelos de Menny: pedidos, cuentas, pagos, intentos de pago, movimientos de caja, reservas, solicitudes de entrada, descuentos, reembolsos, facturas, suscripciones, usuarios y más.
+
+<Note>
+  El propio modelo `Event` no se audita a sí mismo. Todo lo demás sí.
+</Note>
+
+## Qué se guarda en cada tipo de cambio
+
+| Tipo de cambio | Qué registra el payload |
+| --- | --- |
+| **Creación** | Snapshot del registro creado, excluyendo atributos ignorados del framework como `id`, `created_at` y `updated_at`. |
+| **Actualización** | Solo los campos que cambiaron, con su valor anterior y nuevo. |
+| **Eliminación suave** | Un evento `soft_destroy_record` o `restore_record` con payload vacío. |
+| **Eliminación definitiva** | Un evento `destroy_record` con payload vacío. |
+
+## Transiciones bloqueadas y auditadas
+
+Menny bloquea transiciones ilegales en los modelos de negocio y las registra. Por ejemplo:
+
+- No puedes reabrir una cuenta (`Bill`) mientras haya un intento de pago pendiente. El validador `cannot_reopen_while_payment_attempt_is_pending` lo impide.
+- No puedes aplicar un descuento sobre una línea ya pagada o bloqueada. El sistema responde con un código de rechazo que queda trazable.
+- No puedes cancelar un pedido que ya está en progreso si no hay una razón válida del catálogo de cancelaciones.
+
+Cada intento fallido que toca la base de datos genera un evento, así que siempre hay rastro de quién intentó qué.
+
+## Ejemplo práctico: llamadas al mesero
+
+Las llamadas al mesero no usan una tabla propia. En su lugar, se registran como eventos:
+
+- `waiter_called`: el comensal presionó el botón.
+- `waiter_call_acknowledged`: un mesero marcó que atendió la llamada.
+- `waiter_call_cancelled`: el comensal canceló la solicitud.
+
+Para saber si una mesa está llamando, el sistema compara timestamps: si el evento `waiter_called` más reciente es posterior al último `waiter_call_acknowledged` o `waiter_call_cancelled`, la llamada sigue activa. Esto evita tablas sincronizadas, flags y migraciones para señales que ya son eventos.
+
+## Retención indefinida
+
+Los eventos de Menny se conservan indefinidamente. No hay política de eliminación automática porque son la fuente de verdad para:
+
+- Reportes operativos (qué pasó en un turno, quién cobró qué).
+- Diagnóstico de disputas (un comensal dice que pagó, el restaurante dice que no).
+- Cumplimiento fiscal y regulatorio.
+
+## Atributos sensibles
+
+Algunos modelos marcan atributos como `event_redacted_attributes` para que no lleguen al audit trail. Por ejemplo:
+
+- `Location::EntryRequest` oculta el `claim_token` (un credential vivo que podría usarse para entrar a una mesa).
+- `Location::PaymentTransaction` oculta el `provider_payload_snapshot` de Stripe para evitar que datos personales del comensal (nombre, correo) queden en la bitácora.
+
+## Cómo usar los eventos en tu día a día
+
+Como manager o staff, no necesitas leer la tabla de eventos directamente. Los eventos impulsan:
+
+- Las notificaciones en tiempo real del piso (nuevos pedidos, pagos fallidos, solicitudes de entrada).
+- El historial de cambios en pedidos y cuentas.
+- Los reportes de caja y cierre de turno.
+
+<Tip>
+  Si surge una disputa operativa (por ejemplo, un comensal dice que pagó pero la cuenta sigue abierta), revisa el historial de eventos de la cuenta y de los intentos de pago. Ahí verás exactamente qué se intentó, cuándo y con qué resultado, sin depender de la memoria del equipo.
+</Tip>

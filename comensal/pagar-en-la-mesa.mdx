@@ -1,0 +1,51 @@
+---
+title: "Paga desde tu teléfono en la mesa"
+description: "Paga tu parte de la cuenta en Menny desde tu teléfono. Elige método de pago, selecciona propina y confirma. Aprende el flujo digital con Stripe Checkout y qué hacer si el pago se atora."
+sidebarTitle: "Pagar"
+---
+
+En Menny pagas directamente desde tu teléfono sin esperar a que el mesero traiga la terminal o la cuenta impresa. Abres tu cuenta activa, eliges los items que vas a pagar, seleccionas método de pago y confirmas. El proceso es distinto según la sucursal, porque cada restaurante configura qué métodos acepta.
+
+<Steps>
+  <Step title="Abre tu cuenta activa">
+    Desde menny.app, entra a la mesa donde estás sentado. Si aún no has entrado, escanea el QR de la mesa primero.
+  </Step>
+  <Step title="Selecciona los items a pagar">
+    Toca los items que consumiste. Revisa que tu selección sea correcta antes de continuar. Recuerda: no puedes pagar parcialmente un item; lo tomas completo o lo dejas para otro comensal.
+  </Step>
+  <Step title="Elige método de pago">
+    La sucursal define qué métodos están disponibles. Pueden ser uno o varios de estos:
+
+    - **Efectivo**: avisas al mesero y él registra el pago en su panel.
+    - **Terminal física**: el mesero trae la terminal de la sucursal para que completes el cobro.
+    - **Digital en la app**: pagas con tarjeta a través de Stripe Checkout integrado en Menny.
+  </Step>
+  <Step title="Elige propina">
+    Si la sucursal tiene propinas activadas, verás hasta cuatro porcentajes sugeridos. **0% siempre está disponible y nada arriba de 0% viene preseleccionado.** Tú decides cuánto dejar, incluso si es cero.
+  </Step>
+  <Step title="Confirma el pago">
+    - Para efectivo o terminal, confirma en la app y espera a que el mesero registre o procese el cobro.
+    - Para digital, se abre Stripe Checkout de la sucursal. Ingresa tus datos de tarjeta y completa el pago.
+  </Step>
+</Steps>
+
+## Pago digital con Stripe Checkout
+
+Cuando eliges pagar digital, Menny redirige a Stripe Checkout hospedado sobre Stripe Connect Express de la sucursal. Esto significa que el dinero va directo a la cuenta del restaurante, con la comisión de servicio de Menny incluida como `application_fee_amount`.
+
+Menny confirma el pago vía webhook de Stripe. Una vez confirmado, los items que pagaste se bloquean para todos los demás comensales y se marcan como pagados en la cuenta.
+
+<Tip>
+  No cierres la ventana del navegador ni la app mientras se procesa el pago digital. Si cierras antes de que Stripe envíe la confirmación, el pago puede quedar en estado pendiente y necesitarás pedir ayuda al mesero.
+</Tip>
+
+## Si el pago se atora
+
+Si un intento de pago digital falla o queda pendiente, los totales de la cuenta se congelan temporalmente para evitar inconsistencias. El staff recibe una alerta en su panel de atención a mesa. Puedes intentar de nuevo o cambiar a efectivo o terminal, según lo que la sucursal acepte.
+
+## Artículos relacionados
+
+- [Entra a tu mesa escaneando el QR](comensal/entrada-por-qr)
+- [Divide la cuenta por item con tu mesa](comensal/dividir-cuenta)
+- [Pagos](servicio/pagos)
+- [Propinas](servicio/propinas)

@@ -1,0 +1,81 @@
+---
+title: "Glosario de términos de Menny para restaurantes"
+description: "Consulta las definiciones de los conceptos clave de Menny: sucursal, cuenta, pedido, estacion, QR estatico, Stripe Connect y mas."
+sidebarTitle: "Glosario"
+---
+
+Este glosario define los terminos que usamos en Menny y que encontraras en toda la documentacion. Cada definicion esta basada en el funcionamiento real del producto.
+
+<AccordionGroup>
+  <Accordion title="Sucursal (Location)">
+    Es la unidad de tenant en Menny. Todos los menus, mesas, usuarios y configuraciones de pago estan scoped por sucursal. La clave de tenant es `locationId`.
+  </Accordion>
+
+  <Accordion title="Mesa (Table)">
+    Espacio fisico del restaurante con un QR estatico impuesto. Una mesa puede tener varias cuentas activas al mismo tiempo y solo vuelve a disponible por liberacion manual del staff.
+  </Accordion>
+
+  <Accordion title="Cuenta (Bill)">
+    Es la unidad central del servicio en Menny, no el carrito. Agrupa los pedidos de un grupo de comensales en una mesa. Puede estar abierta, cerrada o pagada.
+  </Accordion>
+
+  <Accordion title="Participante (BillParticipant)">
+    Es un comensal unido a una cuenta. Un participante puede pertenecer a una cuenta sin haber pedido nada. El pago es por seleccion de items individuales.
+  </Accordion>
+
+  <Accordion title="Pedido (Order)">
+    Conjunto de items solicitados por un participante. Pasa por estados desde `draft` hasta `served` y nunca cambia de cuenta.
+  </Accordion>
+
+  <Accordion title="Item">
+    Producto del menu que se puede pedir. Los items pueden tener foto, emoji o icono, en ese orden de precedencia visual.
+  </Accordion>
+
+  <Accordion title="Modificador">
+    Variante o adicion a un item, modelada como un `Item` con relacion polimorfica `parent`. Por ejemplo, "doble queso" sobre una hamburguesa.
+  </Accordion>
+
+  <Accordion title="Estacion">
+    Area de preparacion del restaurante, como cocina o barra. Los pedidos se asignan a estaciones y cambian a `in_progress` cuando la estacion comienza a prepararlos.
+  </Accordion>
+
+  <Accordion title="QR estatico">
+    Codigo impreso fijo en cada mesa. Los comensales escanean el QR para solicitar entrar a una cuenta. El staff o un participante existente debe aprobar la solicitud.
+  </Accordion>
+
+  <Accordion title="QR de invitacion">
+    Codigo generado dinamicamente para invitar a otro comensal a una cuenta abierta. Permite que alguien se una sin pasar por aprobacion del staff.
+  </Accordion>
+
+  <Accordion title="Cuenta compartida">
+    Modelo de servicio en dine-in donde varios comensales participan en la misma cuenta, cada uno paga sus propios items y los pagados se bloquean para los demas.
+  </Accordion>
+
+  <Accordion title="Comensal anonimo">
+    Usuario que entra a dine-in sin registrarse. Se persiste como `User` y puede upgradearse a registrado sin perder su historial de cuentas cerradas.
+  </Accordion>
+
+  <Accordion title="Manager">
+    Unico rol del staff que puede acceder a configuracion administrativa: menu, mesas, usuarios, sucursal y facturacion. Los demas roles solo manejan operativos.
+  </Accordion>
+
+  <Accordion title="Stripe Connect Express">
+    Cuenta de Stripe conectada por sucursal para habilitar pagos digitales. Requiere onboarding completo por cada ubicacion.
+  </Accordion>
+
+  <Accordion title="application_fee_amount">
+    Campo de Stripe Connect que Menny usa para cobrar la comision de servicio en pickup y, cuando aplica, la tarifa que se descuenta al restaurante.
+  </Accordion>
+
+  <Accordion title="Event">
+    Fuente unica e inmutable de visibilidad de negocio y auditoria en Menny. Retencion indefinida. Bloquea transiciones ilegales y las registra.
+  </Accordion>
+
+  <Accordion title="Solid Queue">
+    Cola de procesamiento de fondo de Rails que usa Menny para tareas asincronas, como el envio de notificaciones y el procesamiento de webhooks.
+  </Accordion>
+
+  <Accordion title="ActionCable">
+    Canal de WebSockets de Rails que Menny usa para actualizaciones en tiempo real entre el staff y los comensales, como notificaciones de pedidos listos.
+  </Accordion>
+</AccordionGroup>

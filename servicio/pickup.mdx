@@ -1,0 +1,54 @@
+---
+title: "Pickup en Menny: flujo, ETA y fallback de pago"
+description: "Conoce el flujo de pickup en Menny: pedidos para llevar con ETA manual, estados ready_for_pickup y picked_up, y qué pasa si falla el pago digital prepago."
+sidebarTitle: "Pickup"
+---
+
+En Menny, el flujo de pickup es distinto e inmutable al de servicio en mesa. Está diseñado exclusivamente para pedidos para llevar, donde el comensal ordena, paga y recoge en el restaurante. No hay cuenta compartida, no hay propina y el comensal debe estar registrado en la plataforma.
+
+## Requisitos para usar pickup
+
+<Warning>
+  El pickup solo está disponible para usuarios registrados. Los comensales anónimos que entran escaneando un QR en mesa no pueden crear pedidos de pickup. Esto garantiza trazabilidad y permite la comunicación con el comensal si hay retrasos o problemas.
+</Warning>
+
+## Ciclo de vida del pedido de pickup
+
+<Steps>
+  <Step title="Pedido creado">
+    El usuario registrado arma su orden desde la app y la envía. El pedido entra al sistema con estado inicial.
+  </Step>
+  <Step title="Confirmado disponible con ETA">
+    El staff revisa el pedido y confirma que puede prepararlo. En ese momento, asigna manualmente un ETA (tiempo estimado de entrega) que el comensal ve en su app.
+  </Step>
+  <Step title="ready_for_pickup">
+    El pedido está listo para recogerse. El comensal recibe una notificación y puede pasar por él.
+  </Step>
+  <Step title="picked_up o no_show">
+    Si el comensal recoge el pedido, pasa a `picked_up`. Si no pasa a recogerlo dentro de un tiempo razonable, el staff puede marcarlo como `no_show`.
+  </Step>
+</Steps>
+
+## Pago prepago y fallback
+
+El pickup soporta pago digital prepago. Cuando el comensal ordena, puede pagar inmediatamente a través de Stripe Checkout. Si el pago digital falla por cualquier razón (tarjeta rechazada, 3D Secure no completado, error de red), el pedido no se invalida. En su lugar, cae automáticamente a pago en tienda: el comensal puede recoger el pedido y pagar en efectivo o con terminal física al llegar.
+
+Este fallback protege tanto al comensal como al restaurante. El pedido sigue en cola de preparación y el staff no pierde la venta por un problema de pago transitorio.
+
+## Sin cuenta compartida ni propina
+
+A diferencia del servicio en mesa, el pickup no usa el modelo de cuenta compartida. Cada pedido es independiente y pertenece a un solo usuario. No hay QR de mesa, no hay solicitudes de entrada ni aprobaciones.
+
+Las propinas tampoco aplican en pickup. El flujo de pago no muestra opciones de propina, ya que no hay servicio de mesa que recompensar.
+
+## ETA manual del staff
+
+El ETA no es automático. Cuando un pedido de pickup llega, el staff evalúa la carga actual de la cocina y asigna manualmente el tiempo estimado. Esto permite ajustar expectativas en momentos de alta demanda y evita promesas imposibles de cumplir.
+
+El comensal ve el ETA actualizado en su app y recibe una notificación cuando el pedido pasa a `ready_for_pickup`.
+
+## Próximos pasos
+
+- Compara con el flujo de mesa en [Cuentas compartidas](servicio/cuentas-compartidas).
+- Revisa los estados técnicos en [Estados](referencia/estados).
+- Configura los métodos de pago de tu sucursal en [Pagos](servicio/pagos).

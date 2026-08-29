@@ -1,0 +1,82 @@
+---
+title: "Configura Stripe Connect Express para cobros digitales"
+description: "Conecta tu sucursal con Stripe Connect Express para recibir pagos digitales en la app. Sigue el onboarding paso a paso y entiende cómo Menny maneja cobros, webhooks y reintentos."
+sidebarTitle: "Stripe Connect"
+---
+
+Para aceptar pagos digitales directamente en la app de Menny, cada sucursal necesita una cuenta Stripe Connect Express. Esto permite que tus comensales paguen con tarjeta desde su teléfono y que el dinero llegue a tu cuenta bancaria sin que tú proceses los datos de pago.
+
+<Warning>
+  No habilites el método de pago "digital" hasta que termines el onboarding de Stripe Connect. Si lo activas antes, tus comensales verán la opción de pagar en la app, pero el cobro fallará porque la cuenta conectada no está lista.
+</Warning>
+
+## Requisitos previos
+
+- Tener una sucursal registrada en Menny.
+- Ser manager de la sucursal (solo los managers acceden a la configuración de facturación).
+- Contar con los datos del representante legal y la cuenta bancaria de la sucursal.
+
+## Pasos para conectar tu cuenta
+
+<Steps>
+  <Step title="Abre la configuración de tu sucursal">
+    En el panel de staff, ve a **Configuración \> Facturación y pagos**. Ahí encontrarás la sección de Stripe Connect.
+  </Step>
+  <Step title="Inicia el onboarding">
+    Presiona el botón para conectar con Stripe. Menny redirige a Stripe con los datos básicos de tu sucursal ya precargados (nombre, correo, teléfono de soporte y descripción del negocio).
+  </Step>
+  <Step title="Completa el flujo de Stripe">
+    En la interfaz de Stripe proporciona:
+
+    - Tipo de negocio (empresa o persona física).
+    - Identidad del representante legal.
+    - Dirección fiscal.
+    - Cuenta bancaria para recibir transferencias.
+  </Step>
+  <Step title="Regresa a Menny">
+    Una vez que Stripe confirme tu cuenta, serás redirigido de vuelta al panel de Menny. El estado se actualiza automáticamente y verás que tu cuenta está lista para cobrar.
+  </Step>
+</Steps>
+
+## Cómo funciona el cobro digital
+
+Cuando un comensal elige pagar con tarjeta en la app, Menny crea una sesión de Stripe Checkout hospedada sobre tu cuenta Connect Express. El comensal completa el pago en una pantalla segura de Stripe y regresa a la app.
+
+Menny usa `application_fee_amount` para retener en el momento del pago:
+
+- La comisión de servicio de pickup configurada para tu sucursal (si aplica).
+- Cualquier tarifa adicional que hayas definido.
+
+El resto del monto se transfiere directamente a tu cuenta conectada.
+
+## Seguridad y confiabilidad
+
+### Deduplicación de webhooks
+
+Stripe envía notificaciones (webhooks) cada vez que algo cambia en un pago. Menny almacena cada evento en `Payments::StripeWebhookEvent` y lo procesa una sola vez. Si Stripe reenvía un webhook por error de red, Menny lo detecta como duplicado y lo ignora.
+
+### Idempotencia en creación y reintento
+
+Cada intento de pago lleva una clave de idempotencia única. Esto significa que si un comensal toca el botón de pagar dos veces, o si la red falla en medio de la transacción, Stripe no cobra dos veces. Menny reutiliza el intento existente en lugar de crear uno nuevo.
+
+### Dos capas de registro
+
+Menny separa la lógica de negocio de la integración con Stripe para que siempre sepas qué pasó:
+
+| Capa | Qué registra | Para qué sirve |
+| --- | --- | --- |
+| `Location::PaymentAttempt` | El intento de pago desde la perspectiva de tu restaurante (método, items seleccionados, propina, estado) | Es la fuente de verdad del negocio |
+| `Location::PaymentTransaction` | El registro cara a Stripe (ID de sesión, ID de PaymentIntent, estado del proveedor, payload completo) | Es el puente técnico con Stripe |
+
+Si algo sale mal, puedes diagnosticar desde el intento de dominio sin necesidad de leer payloads crudos de Stripe.
+
+## Estados de la cuenta Connect
+
+Tu cuenta Stripe Connect puede estar en uno de estos estados:
+
+- **Pendiente de onboarding**: aún no has completado el registro en Stripe.
+- **Restringida**: faltan documentos o hay requisitos pendientes.
+- **Lista**: la cuenta está verificada y puede recibir cobros.
+- **Deshabilitada**: Stripe desactivó la cuenta por alguna razón.
+
+Desde el panel de facturación de Menny puedes ver el estado actual, los requisitos pendientes y refrescar la sincronización con Stripe cuando hayas subido documentos.

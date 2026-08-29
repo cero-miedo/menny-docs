@@ -1,0 +1,27 @@
+---
+title: "Dominios y superficies: apex, staff y admin"
+description: "Conoce las tres superficies de Menny aisladas por host. Cada dominio sirve a una audiencia distinta: comensales, staff del restaurante y operadores internos."
+sidebarTitle: "Dominios"
+---
+
+Menny se divide en tres superficies aisladas por host. Cada una tiene su propia interfaz, su audiencia y sus reglas de acceso. No hay lógica de UI compartida entre ellas. Cuando escribes una URL, la aplicación decide quién eres solo por el dominio.
+
+## Tabla de superficies
+
+| Host | Audiencia | Enrutado por |
+| --- | --- | --- |
+| `menny.app` (apex) | Comensales y directorio público de restaurantes | `ApexConstraint` |
+| `staff.menny.app` | Meseros, cocina, cajeros y managers del restaurante | `DomainConstraint` |
+| `admin.menny.app` | Operadores internos de Menny | `DomainConstraint` |
+
+## Tenant y scope
+
+La clave de tenant en Menny es `locationId`. Todas las entidades de un restaurante estan scoped por sucursal (ubicacion). En el dominio `staff.menny.app`, cada query debe aplicar scope de tenant. Solo el dominio `admin.menny.app` puede acceder cross-tenant, y siempre con traza de auditoria completa.
+
+## Desarrollo local
+
+En tu entorno de desarrollo se usa `*.lvh.me`, que resuelve a `127.0.0.1`. Esto te permite probar subdominios sin configurar DNS. Tambien puedes usar ngrok con las variables de entorno `MENNY_STAFF_URL`, `MENNY_APEX_URL` y `MENNY_ADMIN_URL` para exponer cada superficie por separado.
+
+<Warning>
+  No intentes abrir `localhost` directamente. Sin subdominio, la app no sabe que audiencia eres y no funcionara correctamente.
+</Warning>

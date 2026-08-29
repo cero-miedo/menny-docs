@@ -1,0 +1,32 @@
+---
+title: "Configura tu sucursal: dirección, marca y directorio"
+sidebarTitle: "Sucursal"
+description: "Gestiona la dirección, logo, moneda, idioma, métodos de pago y propinas de tu sucursal en Menny. Aparece en el directorio público de menny.app."
+---
+
+Cada sucursal en Menny es una unidad operativa independiente con su propia configuración. Esta página explica qué datos configuras por sucursal, cómo apareces en el directorio público y quién puede modificar estos ajustes.
+
+## Qué guarda una sucursal
+
+La sucursal almacena los datos que definen tu presencia pública y operativa:
+
+- **Dirección estructurada**: calle y número (`address_line1`), interior o piso (`address_line2`), colonia o delegación (`city`), estado (`state`), código postal (`postal_code`) y país (`country`). La latitud y longitud derivadas de esta dirección permiten ordenar resultados por proximidad en el directorio.
+- **Logo**: imagen que aparece en el directorio público y en la interfaz del comensal. Formatos aceptados: JPEG, PNG o WebP (máximo 5 MB).
+- **Moneda**: fijada en MXN para el mercado de lanzamiento (México).
+- **Idioma**: español como idioma principal, con inglés a paridad total en todas las superficies.
+- **Métodos de pago habilitados**: efectivo, terminal física o digital en la app. Al menos uno debe estar activo para operar. El pago digital requiere onboarding completo de Stripe Connect por sucursal.
+- **Política de propina**: hasta cuatro porcentajes sugeridos configurables. El 0% siempre se ofrece y nada arriba de 0% viene preseleccionado. La distribución por defecto es 60% meseros y 40% compartido (barra, cocina, cajeros, host).
+
+## Directorio público
+
+Tu sucursal aparece en el directorio público de [menny.app](https://menny.app) y en la ruta `/search` cuando está publicada y aceptando comensales.
+
+La búsqueda de restaurantes ignora acentos y no distingue mayúsculas de minúsculas. Por ejemplo, si un comensal escribe `taqueria`, el sistema encuentra `Taquería` sin problema. El ordenamiento opcional por proximidad usa la fórmula de haversine nativa de Postgres, calculada desde la latitud y longitud de tu dirección.
+
+## Quién puede configurar la sucursal
+
+Solo el rol **manager** puede modificar la configuración administrativa de una sucursal: dirección, logo, métodos de pago, política de propina, menú, mesas, usuarios y facturación. Los demás roles del staff (mesero, cajero, cocinero, bartender) operan pedidos, cuentas y pagos, pero no tienen acceso a estos ajustes.
+
+<Note>
+  Los cambios en la configuración de la sucursal quedan registrados en el flujo de eventos de auditoría. Puedes consultarlos en la sección de [eventos y auditoría](/administracion/eventos-y-auditoria).
+</Note>

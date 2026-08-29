@@ -1,0 +1,72 @@
+---
+title: "Métodos de pago y cobro en Menny"
+description: "Conoce los métodos de pago disponibles en Menny: efectivo, terminal física y digital. Aprende cómo se configuran, cómo funciona Stripe Connect y cómo se bloquean los items pagados."
+sidebarTitle: "Pagos"
+---
+
+En Menny, los comensales pueden pagar su cuenta usando efectivo, terminal física o pago digital dentro de la app. Cada sucursal configura qué métodos acepta, pero al menos uno debe estar habilitado siempre para que el servicio funcione. El pago siempre es por selección de items: cada quien elige qué consumió y los items pagados se bloquean inmediatamente para todos los actores.
+
+## Métodos de pago disponibles
+
+<CardGroup cols={3}>
+  <Card title="Efectivo" icon="banknote">
+    El comensal paga en caja. El cajero marca los items como pagados en el sistema. No requiere configuración adicional.
+  </Card>
+
+  <Card title="Terminal física" icon="credit-card">
+    El comensal paga con tarjeta en la terminal del restaurante. El cajero o mesero confirma el cobro en Menny. Requiere que la sucursal tenga terminal propia.
+  </Card>
+
+  <Card title="Digital en la app" icon="smartphone">
+    El comensal paga directamente desde su celular usando Stripe Checkout. Requiere onboarding de Stripe Connect Express por sucursal.
+  </Card>
+</CardGroup>
+
+## Configuración por sucursal
+
+El manager de cada sucursal decide qué métodos de pago están activos. Desde la configuración administrativa, puede habilitar o deshabilitar cada método. Si una sucursal desactiva todos los métodos, el sistema bloquea nuevas cuentas hasta que al menos uno se reactive.
+
+El pago digital requiere completar el onboarding de Stripe Connect Express para esa sucursal. Hasta que no se complete, el método digital no aparece como opción para los comensales.
+
+## Pago digital con Stripe Connect
+
+Cuando un comensal elige pagar digitalmente, Menny redirige a Stripe Checkout hospedado sobre la cuenta Stripe Connect Express de la sucursal. Al momento del cobro, Menny incluye un `application_fee_amount` que corresponde a la comisión de servicio configurada para esa sucursal.
+
+Los webhooks de Stripe son procesados por `Payments::StripeWebhookEvent`, que maneja la deduplicación y la transición de estados. La creación de pagos y los reintentos son idempotentes: si un webhook llega duplicado o un comensal refresca la página, no se genera un segundo cargo.
+
+## Estados de un pago digital
+
+<Steps>
+  <Step title="pending">
+    El comensal inició el pago pero aún no completa la acción en Stripe Checkout.
+  </Step>
+  <Step title="processing">
+    Stripe está procesando el cargo. El comensal no debe cerrar la ventana.
+  </Step>
+  <Step title="requires_action">
+    Stripe solicita una acción adicional, como 3D Secure o confirmación bancaria.
+  </Step>
+  <Step title="terminal por webhook">
+    Stripe confirma o rechaza el pago. Menny actualiza el estado de los items y la cuenta según la respuesta.
+  </Step>
+</Steps>
+
+## División por item
+
+Cuando varios comensales comparten una cuenta, cada quien selecciona los items que va a pagar. Al confirmar el pago, esos items se bloquean inmediatamente: nadie más puede pagarlos, editarlos ni quitarlos. Esto evita que dos comensales paguen el mismo platillo por error.
+
+Si un comensal abandona el flujo de pago antes de completarlo, los items seleccionados se desbloquean automáticamente después de un tiempo para que otros puedan pagarlos.
+
+## Congelamiento de totales
+
+Cuando existe un intento de pago en curso, los totales de la cuenta se congelan. Nuevos pedidos pueden seguir agregándose a la cuenta, pero los items ya existentes no pueden modificarse ni eliminarse mientras haya un pago activo. Esto garantiza que el monto cobrado coincida exactamente con lo que el comensal vio en pantalla.
+
+<Warning>
+  Menny no soporta pagos parciales. No es posible pagar la mitad de un item con una tarjeta y la otra mitad con efectivo. Cada item se paga completo por una sola persona y un solo método.
+</Warning>
+
+## Próximos pasos
+
+- Configura Stripe Connect para tu sucursal en [Stripe Connect](administracion/stripe-connect).
+- Aprende cómo dividir la cuenta entre comensales en [Dividir cuenta](comensal/dividir-cuenta).
+- Revisa los estados técnicos en [Estados](referencia/estados).

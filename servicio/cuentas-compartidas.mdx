@@ -1,0 +1,45 @@
+---
+title: "Cuentas compartidas por mesa en Menny"
+description: "Entiende cómo funciona la cuenta como unidad central en Menny. Aprende a gestionar comensales, aprobaciones por QR y el ciclo de vida de una cuenta compartida."
+sidebarTitle: "Cuentas compartidas"
+---
+
+En Menny, la cuenta (Bill) es la unidad central de todo el servicio, no el carrito. Los comensales escanean un QR estático en la mesa, solicitan unirse y el staff o un participante existente aprueba la entrada. Así se forma una cuenta compartida donde todos pueden ver, pedir y pagar.
+
+## Cómo funciona la cuenta compartida
+
+Cada mesa tiene un QR estático impreso. Cuando un comensal escanea el QR, solicita permiso para unirse a la cuenta activa de esa mesa. El staff o cualquier comensal ya dentro de la cuenta puede aprobar la solicitud. Una vez aprobado, el comensal puede ver los items existentes, agregar nuevos pedidos y participar en el pago.
+
+Una mesa puede tener varias cuentas activas al mismo tiempo, pero cada comensal solo puede pertenecer a una cuenta activa a la vez. Esto evita confusiones y mantiene el control de quién está en qué mesa en cada momento.
+
+## Ciclo de vida de una cuenta
+
+<Steps>
+  <Step title="open">
+    La cuenta se abre cuando el primer comensal escanea el QR y se aprueba su entrada. En este estado, cualquier participante puede agregar o editar pedidos.
+  </Step>
+  <Step title="closed">
+    El staff o un participante pueden cerrar la cuenta. Esto bloquea nuevos pedidos, pero no implica que todo haya sido pagado. Una cuenta puede cerrarse sin pago si el restaurante decide cobrar por otro medio.
+  </Step>
+  <Step title="paid">
+    El estado terminal financiero. Se alcanza cuando todos los items de la cuenta han sido pagados. Hasta ese momento, la cuenta sigue activa operativamente.
+  </Step>
+</Steps>
+
+## Participación sin pedido
+
+Un comensal puede pertenecer a una cuenta sin haber pedido nada. Esto es útil cuando alguien solo quiere pagar una parte o cuando un niño o acompañante no ordena pero está en la mesa. La membresía en la cuenta es independiente de los pedidos realizados.
+
+## Bloqueo por intento de pago
+
+Cuando existe un intento de pago en curso, la cuenta no se puede reabrir ni modificar en su totalidad. Los totales se congelan para evitar discrepancias entre lo que se muestra en pantalla y lo que se cobra. Esto protege tanto al comensal como al restaurante.
+
+<Warning>
+  Menny no soporta pagos parciales. Cada item se paga completo o no se paga. No es posible dividir el costo de un solo item entre varias tarjetas o métodos.
+</Warning>
+
+## Próximos pasos
+
+- Aprende cómo se gestionan los pedidos dentro de una cuenta en [Pedidos](servicio/pedidos).
+- Consulta los estados posibles en la referencia de [Estados](referencia/estados).
+- Descubre cómo dividir la cuenta en [Dividir cuenta](comensal/dividir-cuenta).

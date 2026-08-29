@@ -1,0 +1,39 @@
+---
+title: "Conceptos base de Menny: cuenta, mesa, pedido"
+description: "Entiende el modelo mental de Menny: sucursal, mesa, cuenta compartida, participantes, pedidos, items con modificadores y eventos inmutables."
+sidebarTitle: "Conceptos"
+---
+
+Menny organiza el servicio de mesa alrededor de conceptos que rompen con el modelo tradicional de carrito de compras. En Menny la cuenta es la unidad central de participación, consumo y pago. Esta página explica cada pieza del modelo para que tomes decisiones informadas al configurar y operar tu restaurante.
+
+## Sucursal (Location)
+
+La sucursal es el tenant key de Menny. Toda entidad del sistema, menú, mesas, personal, métodos de pago y configuración de propinas, vive dentro de una sucursal. Cuando inicias sesión en `staff.menny.app`, eliges con qué sucursal trabajar. Los comensales que escanean un QR quedan automáticamente asociados a la sucursal que posee esa mesa.
+
+## Mesa (Table)
+
+La mesa es la unidad física del restaurante. Cada mesa tiene un QR estático impreso que nunca cambia. Al escanearlo, el comensal llega a `menny.app` y solicita unirse a una cuenta activa de esa mesa. Una misma mesa puede tener varias cuentas activas simultáneamente, por ejemplo cuando un grupo termina y otro llega antes de que el staff cierre la cuenta anterior.
+
+## Cuenta (Bill)
+
+La cuenta es la unidad canónica de Menny. Es compartida, invitada y opera a nivel de item. Los comensales se unen por invitación, ordenan dentro de la misma cuenta y pagan solo los items que seleccionan. No existe el concepto de carrito individual: todo pedido entra a la cuenta común. Los items pagados se bloquean inmediatamente para todos los participantes, meseros y cocina. No hay pagos parciales.
+
+## Participante (BillParticipant)
+
+Un participante es un comensal ligado a una cuenta. Puedes pertenecer a una cuenta sin haber ordenado nada. Los participantes anónimos son soportados en dine-in: se persisten como `User` y pueden convertirse en usuarios registrados más tarde sin perder el historial de cuentas cerradas. En pickup, en cambio, se exige un usuario registrado desde el inicio.
+
+## Pedido (Order)
+
+El pedido es el registro operativo de consumo dentro de una cuenta. Cada pedido pertenece a exactamente una cuenta y no puede moverse a otra. Los pedidos pasan por estados explícitos que la cocina, los meseros y los comensales pueden consultar en tiempo real.
+
+## Item y modificador
+
+Los items son los productos del menú. Cada item puede tener una foto, un `emoji` opcional o un icono genérico, en ese orden de precedencia visual. Los modificadores, como "doble queso" o "sin cebolla", se modelan como items con una relación polimórfica `parent` hacia otro item. Esto permite precios, disponibilidad y emojis propios para cada modificador.
+
+## Evento (Event)
+
+`Event` es la fuente única e inmutable de historia y auditoría en Menny. Toda transición relevante genera un evento con retención indefinida. Las transiciones ilegales están bloqueadas y auditadas. Los eventos alimentan tanto la visibilidad operativa en tiempo real como los reportes históricos de negocio.
+
+<Tip>
+  La regla de la cuenta: en Menny la cuenta es la unidad, no el carrito. Piensa siempre en términos de quién participa en la cuenta, qué items contiene y quién pagó qué, en lugar de usuarios con carritos individuales.
+</Tip>

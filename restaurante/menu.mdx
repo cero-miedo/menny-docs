@@ -1,0 +1,39 @@
+---
+title: "Arma tu menú: categorías, items y modificadores"
+sidebarTitle: "Menú"
+description: "Construye tu menú en Menny con categorías, items y modificadores. Usa fotos, emojis e iconos para que el comensal navegue fácilmente desde su teléfono."
+---
+
+El menú en Menny se arma con categorías que agrupan items, y cada item puede tener modificadores que el comensal selecciona al ordenar. Esta página explica cómo se modela el menú y cómo se ve para quien ordena desde la app.
+
+## Estructura del menú
+
+Tu menú tiene tres niveles:
+
+1. **Categorías**: los grupos visibles para el comensal, como "Entradas", "Tacos" o "Bebidas".
+2. **Items**: los platillos o productos dentro de cada categoría. Cada item tiene nombre, descripción, precio y estación de preparación (cocina, bar, caja o postre).
+3. **Modificadores**: items con una relación polimórfica `parent` que pueden pertenecer a otro item o a una categoría entera. Por ejemplo, una salsa que acompaña un taco específico, o un tipo de tortilla que aplica a toda la categoría de tacos.
+
+## Cómo se ve para el comensal
+
+El comensal navega el menú desde su teléfono. Cada categoría e item puede mostrar una imagen, un emoji o un icono por defecto, en ese orden de precedencia:
+
+- **Foto**: si subiste una imagen al item o categoría, esa es la que se muestra.
+- **Emoji**: si no hay foto pero sí hay un emoji configurado, aparece el emoji.
+- **Icono**: si no hay foto ni emoji, Menny muestra un icono genérico.
+
+Los modificadores aparecen como opciones seleccionables cuando el comensal agrega un item a su cuenta. El precio del modificador se suma al precio base del item.
+
+<Tip>
+  Si aún no tienes fotografía profesional de todos tus platillos, usa emojis descriptivos para cada categoría e item. Un menú con emojis bien elegidos se navega mucho más rápido que uno que depende solo de texto e iconos genéricos.
+</Tip>
+
+## Estados de un item
+
+Cada item puede estar en uno de estos estados:
+
+- **Activo**: visible y disponible para ordenar.
+- **Inactivo**: oculto del menú público.
+- **Agotado**: visible pero no se puede ordenar. Útil cuando se acabó un ingrediente clave durante el servicio.
+
+Cuando la función de conteo de inventario está activada, un item también puede bloquearse automáticamente si su stock llega a cero.

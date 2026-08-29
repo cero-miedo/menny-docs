@@ -1,47 +1,35 @@
 ---
-title: "Quickstart"
-description: "Begin with a guide on the fastest path to a successful outcome"
+title: "Del alta al primer pedido con Menny"
+description: "Aprende a crear tu sucursal, configurar menú y mesas, habilitar pagos y probar el flujo completo de servicio con Menny en minutos."
+sidebarTitle: "Quickstart"
 ---
 
-Describe how someone begins using your product. What is the first thing they need to do? Are there any prerequisites?
-
-A quickstart should take someone from zero to using your product. They'll get a quick win and a sense of what they can accomplish.
-
-## Prerequisites
-
-Before you begin, you must have:
-
-- Requirement one (for example, Node.js 18+, a free account, an API key)
-- Requirement two (for example, a compatible device, a compatible browser, a compatible operating system)
-
-## Get started
+En esta guía llevarás tu restaurante desde el alta hasta el primer pedido real en cinco pasos. Trabajarás principalmente en `staff.menny.app`, la superficie diseñada para el personal del restaurante.
 
 <Steps>
-  <Step title="Install">
-    Describe how to install your product or sign up.
-
-    ```bash
-    npm install your-package
-    ```
+  <Step title="Crea tu cuenta y sucursal">
+    Ve a `staff.menny.app` y completa el registro. Después crea tu primera sucursal (location) ingresando la dirección en formato estructurado y subiendo el logo del restaurante. La sucursal es tu tenant: todo lo que configures a continuación vive dentro de ella.
   </Step>
-  <Step title="Configure">
-    Describe any setup or configuration needed before first use.
-
-    ```bash
-    your-cli init
-    ```
+  <Step title="Configura tu menú">
+    Dentro de tu sucursal, crea categorías y luego los items de cada categoría. Puedes agregar un `emoji` opcional a cada item y categoría; en la app del comensal, la precedencia visual es foto, luego emoji, luego icono. Los modificadores se modelan como items con una relación polimórfica `parent` hacia otro item.
   </Step>
-  <Step title="Run it">
-    Show the first thing a user does to see it working.
-
-    ```bash
-    your-cli start
-    ```
+  <Step title="Registra mesas e imprime los QR">
+    Crea las mesas de tu restaurante. Menny genera un QR estático para cada mesa. Imprime y coloca los códigos en las mesas correspondientes. Cada QR apunta a `menny.app` y lleva el identificador de la mesa; no caduca ni cambia.
+  </Step>
+  <Step title="Habilita métodos de pago">
+    En la configuración de tu sucursal activa al menos un método de pago: efectivo, terminal física o digital. El pago digital requiere completar el onboarding de Stripe Connect Express para esa sucursal. Puedes tener varios métodos activos simultáneamente.
+  </Step>
+  <Step title="Prueba el flujo completo">
+    Desde tu teléfono escanea el QR de una mesa de prueba. Solicita entrar a la cuenta, aprueba tu propia solicitud (o pide a un compañero que la apruebe), ordena un item del menú y completa el pago. Revisa en `staff.menny.app` que el pedido aparece en la cuenta y en la cocina.
   </Step>
 </Steps>
 
-<Tip>
-  Give people a way to get help. This could be a link to a support page, a chat with a customer support agent, or a forum for your product.
+<CardGroup cols={2}>
+  <Card title="Onboarding del restaurante" icon="utensils" href="restaurante/onboarding">
+    Configuración profunda de sucursal, menú y personal.
+  </Card>
 
-  Example: Need help? Reach out to us at [support@yourcompany.com](mailto:support@yourcompany.com).
-</Tip>
+  <Card title="Cuentas compartidas" icon="receipt" href="servicio/cuentas-compartidas">
+    Cómo los comensales se unen, ordenan y pagan juntos.
+  </Card>
+</CardGroup>

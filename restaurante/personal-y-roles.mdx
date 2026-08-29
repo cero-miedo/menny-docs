@@ -1,0 +1,62 @@
+---
+title: "Roles del personal y qué puede hacer cada uno"
+sidebarTitle: "Personal y roles"
+description: "Conoce los roles del staff en Menny: quién opera pedidos, cuentas y pagos, y quién puede configurar menú, mesas, usuarios, sucursal y facturación."
+---
+
+Menny define roles claros para que cada miembro del staff sepa exactamente qué puede hacer en el sistema. Todos los roles operativos manejan el día a día del servicio, pero solo el manager tiene acceso a la configuración administrativa de la sucursal.
+
+## Roles disponibles
+
+Estos son los roles que puedes asignar al invitar a tu equipo:
+
+| Rol | Operativo (pedidos, cuentas, pagos) | Configuración administrativa |
+| --- | --- | --- |
+| **Manager** | Sí | Sí: menú, mesas, usuarios, sucursal, facturación, eventos |
+| **Mesero** | Sí | No |
+| **Cajero** | Sí | No |
+| **Cocinero** | Sí | No |
+| **Bartender** | Sí | No |
+
+## Qué hace cada rol
+
+### Manager
+
+El manager es el único rol con acceso completo a la configuración de la sucursal. Puede:
+
+- Crear, editar y eliminar items y categorías del menú
+- Configurar mesas y sus QR estáticos
+- Invitar y gestionar usuarios del staff
+- Modificar la dirección, logo, métodos de pago y política de propinas de la sucursal
+- Consultar facturación y eventos de auditoría
+- Autorizar descuentos y reembolsos
+- Gestionar la caja (apertura, cierre y arqueo)
+
+### Mesero
+
+Atiende el piso: toma pedidos, gestiona cuentas, aplica descuentos pendientes de aprobación y resuelve solicitudes de entrada de comensales. No puede modificar el menú ni la configuración de la sucursal.
+
+### Cajero
+
+Opera la caja, cobra cuentas, gestiona movimientos de efectivo y cierra turnos. Puede abrir y operar la caja durante su turno, pero no puede autorizar reembolsos ni modificar la configuración administrativa.
+
+### Cocinero
+
+Recibe y actualiza pedidos en la pantalla de cocina (KDS), marca platillos como listos y coordina con el piso para entregas. No tiene acceso a pagos ni configuración.
+
+### Bartender
+
+Recibe y prepara pedidos de bebidas, marca órdenes como listas y coordina con meseros. Su alcance es similar al del cocinero, enfocado en la barra.
+
+## Permisos especiales
+
+Algunas acciones tienen reglas más específicas:
+
+- **Descuentos**: meseros y cajeros pueden _solicitar_ un descuento, pero solo el manager puede _autorizarlo_.
+- **Reembolsos**: solo el manager puede emitir un reembolso.
+- **Caja**: manager y cajero pueden operar la caja; meseros, cocineros y bartenders no.
+- **Eventos de auditoría**: solo el manager puede ver el registro completo de eventos de la sucursal.
+
+<Note>
+  Los cambios administrativos quedan registrados automáticamente en el flujo de eventos de auditoría. Puedes consultarlos en la sección de [eventos y auditoría](/administracion/eventos-y-auditoria).
+</Note>

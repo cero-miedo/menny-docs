@@ -1,0 +1,45 @@
+---
+title: "Propinas: sugerencias, 0% obligatorio y reparto"
+description: "Configura propinas en Menny: hasta 4 porcentajes sugeridos por sucursal, 0% siempre disponible y reparto entre meseros y staff. Conoce las reglas de Location::TipPolicy."
+sidebarTitle: "Propinas"
+---
+
+En Menny, las propinas son voluntarias y se configuran por sucursal. Cada ubicación puede definir hasta cuatro porcentajes sugeridos que los comensales verán al momento de pagar. El 0% siempre está disponible y nada arriba de 0% viene preseleccionado. Menny calcula y reporta el reparto, pero la política de distribución es decisión del restaurante.
+
+## Configuración de porcentajes sugeridos
+
+El manager de cada sucursal define hasta cuatro porcentajes de propina sugeridos. Los valores por defecto son 5%, 10%, 15% y 20%, pero pueden cambiarse desde la configuración administrativa. Estos porcentajes se muestran al comensal durante el flujo de pago digital.
+
+Estas reglas viven en `Location::TipPolicy`, no en las pantallas. Esto significa que el comportamiento de las propinas está centralizado en la política de la sucursal y se aplica de forma consistente en todos los puntos de contacto: app de comensal, vista de caja y reportes.
+
+## La regla del 0%
+
+<Info>
+  El 0% siempre se ofrece como opción y nada arriba de 0% viene preseleccionado. Esta regla es obligatoria: el 0% se antepone al leer las opciones configuradas, no se guarda en base de datos como un porcentaje más, y ninguna migración puede quitarlo. Esto garantiza que el comensal siempre tenga una opción explícita de no dejar propina.
+</Info>
+
+La razón fiscal detrás de esta regla es clara: una propina automática o preseleccionada puede ser considerada un cargo forzoso y volverse gravable en muchos regímenes fiscales. Una propina estrictamente voluntaria, donde el comensal debe elegir activamente un porcentaje mayor a cero, no tiene esa implicación. Menny implementa esta distinción por defecto para proteger al restaurante.
+
+## Reparto de propinas
+
+El reparto por defecto en Menny es:
+
+- **60%** para meseros
+- **40%** compartido entre barra, cocina, cajeros y host
+
+Menny calcula estos montos y los incluye en los reportes de la sucursal. Sin embargo, la política real de distribución es del restaurante: Menny no transfiere automáticamente dinero a cuentas de empleados ni gestiona nómina. Los reportes son una herramienta de apoyo para que el manager decida cómo repartir.
+
+## Dónde aparecen las propinas
+
+Las propinas se presentan en dos momentos clave:
+
+1. **Pago digital:** el comensal elige un porcentaje antes de confirmar el cargo en Stripe Checkout.
+2. **Reportes administrativos:** el manager ve el total de propinas por periodo y el desglose sugerido por reparto.
+
+En pagos en efectivo o terminal física, la propina no se calcula en la app. El cajero o mesero puede registrarla manualmente si el restaurante lo requiere.
+
+## Próximos pasos
+
+- Configura los métodos de pago de tu sucursal en [Pagos](servicio/pagos).
+- Revisa la facturación y comisiones en [Facturación](administracion/facturacion).
+- Consulta el glosario de términos en [Glosario](referencia/glosario).

@@ -1,0 +1,52 @@
+---
+title: "Modelo comercial: suscripción y comisión de pickup"
+description: "Conoce el modelo de facturación de Menny: suscripción mensual fija por sucursal más comisión configurable solo en pedidos para llevar. Dine-in siempre es 0%."
+sidebarTitle: "Facturación"
+---
+
+Menny cobra a tu restaurante con un modelo híbrido: una suscripción mensual fija por cada sucursal activa, más una comisión de servicio que solo aplica en pedidos para llevar (pickup). En el servicio en mesa (dine-in) no hay comisión de ningún tipo.
+
+## Suscripción mensual por sucursal
+
+Cada sucursal que abras paga una cuota base mensual. El monto se define al momento del registro y queda grabado en la configuración de tu ubicación. Si tu grupo tiene varias sucursales, todas se facturan bajo una sola suscripción de Stripe con una cantidad proporcional al número de ubicaciones activas.
+
+<Note>
+  La suscripción es la fuente principal de ingresos de Menny. Es lo que permite que el servicio en mesa sea gratuito para ti y para tus comensales.
+</Note>
+
+## Comisión de servicio en pickup
+
+La comisión solo existe en el riel donde Menny genera la venta: los pedidos para llevar. En el servicio en mesa la comisión es 0 % en todos los métodos de pago (efectivo, terminal física y digital).
+
+Para pickup hay dos tarifas independientes que puedes configurar por sucursal. Ambas arrancan en 0 % por defecto:
+
+| Tarifa | Quién la paga | Cómo se cobra |
+| --- | --- | --- |
+| **Comisión al comensal** | El cliente | Se suma al total que debe pagar en la app |
+| **Comisión al restaurante** | Tu sucursal | Se descuenta del monto que recibes por el pedido |
+
+Ambas tarifas se cobran en el momento del pago digital a través de Stripe Connect, usando el campo `application_fee_amount`. La comisión total de plataforma es la suma de ambas.
+
+<Warning>
+  Ninguna tarifa está fija de antemano. Tú decides si activas una, ambas o ninguna. El valor por defecto es 0 %, así que no recibirás cargos sorpresa.
+</Warning>
+
+## Ejemplo práctico
+
+Imagina que configuras lo siguiente en tu sucursal:
+
+- Comisión al comensal: 5 %
+- Comisión al restaurante: 3 %
+
+Si un cliente hace un pickup de \$500 MXN y paga digitalmente:
+
+1. El cliente paga \$525 MXN (el pedido más el 5 %).
+2. Stripe transfiere a tu cuenta conectada el monto correspondiente.
+3. Menny retiene el 5 % del cliente y el 3 % del restaurante como `application_fee_amount`.
+4. Tú recibes el pedido menos el 3 % de comisión de restaurante.
+
+Si el mismo cliente pagara en efectivo en tu caja, no se aplicaría comisión de ningún tipo porque el pago no pasó por Stripe Connect.
+
+## Facturación y pagos
+
+Tu suscripción se renueva automáticamente cada mes a través de Stripe. Puedes ver el estado de tu suscripción, la fecha de renovación y el historial de facturas desde el panel de configuración de tu sucursal. Si necesitas cambiar la cantidad de sucursales activas, el ajuste se refleja en tu siguiente ciclo de facturación.

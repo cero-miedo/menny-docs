@@ -1,0 +1,49 @@
+---
+title: "Onboarding de restaurante en Menny paso a paso"
+sidebarTitle: "Onboarding"
+description: "Aprende a dar de alta tu restaurante y primera sucursal en Menny: cuenta, organización, dirección, equipo, métodos de pago y publicación."
+---
+
+Menny te permite operar tu restaurante desde el primer día con una configuración guiada. Esta página explica cómo crear tu cuenta, armar tu organización, configurar tu primera sucursal e invitar a tu equipo para empezar a recibir comensales.
+
+<Steps>
+  <Step title="Crea tu cuenta en staff.menny.app">
+    Abre [staff.menny.app](https://staff.menny.app) y completa tu registro con correo y contraseña. Verifica tu correo para activar el acceso.
+  </Step>
+  <Step title="Crea tu organización">
+    Después de verificar tu correo, Menny te pedirá que nombres tu organización. La organización es la entidad de facturación: una sola suscripción cubre todas las sucursales que agregues después.
+  </Step>
+  <Step title="Crea tu primera sucursal">
+    Completa los datos de tu restaurante:
+
+    - **Nombre de la sucursal**
+    - **Dirección estructurada**: calle y número (`address_line1`), interior o piso (`address_line2`), colonia o delegación (`city`), estado (`state`), código postal (`postal_code`) y país (`country`)
+    - **Logo**: sube una imagen en formato JPEG, PNG o WebP (máximo 5 MB)
+
+    La dirección con latitud y longitud permite que los comensales te encuentren por proximidad en el directorio público.
+  </Step>
+  <Step title="Invita a tu equipo con roles">
+    Desde el panel de tu sucursal, ve a **Usuarios** y envía invitaciones. Asigna roles según la función de cada persona:
+
+    - **Manager**: configura menú, mesas, usuarios, sucursal y facturación
+    - **Mesero, cajero, cocinero, bartender**: operan pedidos, cuentas y pagos
+
+    Solo el manager puede tocar la configuración administrativa.
+  </Step>
+  <Step title="Configura métodos de pago">
+    En la configuración de tu sucursal, habilita al menos uno de los métodos disponibles:
+
+    - **Efectivo**
+    - **Terminal física** (datáfono propio del restaurante)
+    - **Digital en la app** (Stripe Checkout)
+
+    Si eliges pago digital, completa el onboarding de Stripe Connect para tu sucursal. Sin este paso, el método digital no se activa.
+  </Step>
+  <Step title="Publica tu sucursal">
+    Revisa la lista de requisitos del onboarding. Cuando todo esté completo (dirección, horario, mesas, menú, estaciones, métodos de pago confirmados y suscripción activa), presiona **Publicar**. Tu sucursal aparecerá en el directorio público de menny.app y estará lista para recibir comensales.
+  </Step>
+</Steps>
+
+<Warning>
+  Antes de arrancar servicio, confirma que los métodos de pago habilitados sean los que realmente quieres mostrar al comensal. Una vez publicada la sucursal, los comensales verán solo los métodos activos en ese momento.
+</Warning>

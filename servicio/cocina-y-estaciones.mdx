@@ -1,0 +1,39 @@
+---
+title: "Cocina y estaciones: qué preparar y cuándo"
+description: "Aprende cómo Menny organiza la preparación de pedidos por estaciones. Conoce la vista actual, el trigger ready y el motivo de atención por pedido sin servir."
+sidebarTitle: "Cocina y estaciones"
+---
+
+En Menny, la cocina y las estaciones de preparación reciben pedidos organizados por área de trabajo. Cada pedido se asigna a una estación desde su creación, lo que permite que barra, cocina caliente, cocina fría o panadería trabajen en paralelo sin pisarse.
+
+## Vista de cocina hoy
+
+La vista operativa para cocina se sirve desde `/orders` filtrada por estación. Esto significa que cada estación ve solo los pedidos que le corresponden, en el orden en que llegaron. No existe hoy una ruta separada como `/kitchen` o `/station`; el filtro por estación dentro de `/orders` es la herramienta activa.
+
+<Info>
+  Una superficie KDS-grade (Kitchen Display System) dedicada está identificada como brecha abierta en el producto. No está diseñada ni priorizada aún, pero se reconoce que la vista filtrada por `/orders` cubre el caso básico mientras no exista una pantalla de cocina optimizada.
+</Info>
+
+## Asignación de estación
+
+La estación se asigna al pedido en el momento de su creación o envío. Esto determina qué área de preparación lo recibe. La asignación es inmutable una vez que el pedido pasa a `accepted`: no se puede reasignar manualmente a otra estación sin cancelar y recrear el pedido. La reasignación manual en pedidos aceptados está identificada como mejora para una fase posterior.
+
+## Trigger ready
+
+Cuando una estación termina de preparar un pedido, lo marca como `ready`. Este estado indica que el pedido está listo para salir a la mesa. El staff de piso o los meseros reciben la señal y deben recogerlo para llevarlo al comensal.
+
+## Pedido listo sin servir
+
+Si un pedido en estado `ready` queda mucho tiempo sin pasar a `served`, Menny dispara un motivo de atención de mesa: "pedido listo sin servir". Este es el tercer motivo en la lista de prioridades de atención a mesa, después de las solicitudes de entrada por QR y las llamadas al mesero.
+
+Este trigger ayuda a que los pedidos no se enfríen ni se olviden en la barra de paso. El staff puede ver en su vista qué mesa tiene un pedido atorado en ready y actuar antes de que el comensal se impaciente.
+
+## Coordinación entre estaciones
+
+Cuando una cuenta tiene pedidos en varias estaciones, cada una trabaja independientemente. El mesero que sirve debe verificar que todos los items de la cuenta estén listos antes de llevarlos juntos, o puede hacer viajes parciales si el comensal prefiere recibir lo que esté listo.
+
+## Próximos pasos
+
+- Revisa el ciclo completo de los pedidos en [Pedidos](servicio/pedidos).
+- Aprende cómo se gestionan las cuentas compartidas en [Cuentas compartidas](servicio/cuentas-compartidas).
+- Consulta los estados técnicos en [Estados](referencia/estados).

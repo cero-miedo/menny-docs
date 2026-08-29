@@ -1,11 +1,11 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
-  "name": "Mintlify Starter Kit",
+  "theme": "palm",
+  "name": "Menny",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#B94A2F",
+    "light": "#E07A5F",
+    "dark": "#7A2E1A"
   },
   "favicon": "/favicon.svg",
   "navigation": {
@@ -18,55 +18,76 @@
         ]
       }
     ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
-  },
-  "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
-  },
-  "navbar": {
-    "links": [
+    "tabs": [
       {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "tab": "Documentación",
+        "groups": [
+          {
+            "group": "Comenzar",
+            "icon": "rocket",
+            "pages": [
+              "index",
+              "quickstart",
+              "conceptos"
+            ]
+          },
+          {
+            "group": "Restaurante",
+            "icon": "utensils",
+            "pages": [
+              "restaurante/onboarding",
+              "restaurante/ubicacion",
+              "restaurante/menu",
+              "restaurante/mesas",
+              "restaurante/personal-y-roles"
+            ]
+          },
+          {
+            "group": "Servicio",
+            "icon": "clipboard-list",
+            "pages": [
+              "servicio/cuentas-compartidas",
+              "servicio/pedidos",
+              "servicio/cocina-y-estaciones",
+              "servicio/pagos",
+              "servicio/propinas",
+              "servicio/pickup"
+            ]
+          },
+          {
+            "group": "Comensal",
+            "icon": "users",
+            "pages": [
+              "comensal/entrada-por-qr",
+              "comensal/dividir-cuenta",
+              "comensal/pagar-en-la-mesa"
+            ]
+          },
+          {
+            "group": "Administración",
+            "icon": "gear",
+            "pages": [
+              "administracion/facturacion",
+              "administracion/stripe-connect",
+              "administracion/eventos-y-auditoria"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Referencia",
+        "groups": [
+          {
+            "group": "Referencia",
+            "icon": "book",
+            "pages": [
+              "referencia/dominios",
+              "referencia/estados",
+              "referencia/glosario"
+            ]
+          }
+        ]
       }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://app.mintlify.com"
-    }
-  },
-  "contextual": {
-    "options": [
-      "copy",
-      "view",
-      "chatgpt",
-      "claude",
-      "perplexity",
-      "mcp",
-      "cursor",
-      "vscode"
     ]
-  },
-  "footer": {
-    "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
-    }
   }
 }

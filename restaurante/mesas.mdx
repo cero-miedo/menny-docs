@@ -1,0 +1,44 @@
+---
+title: "Mesas, QR estáticos y estados de mesa"
+sidebarTitle: "Mesas"
+description: "Gestiona las mesas de tu restaurante en Menny: QR estáticos impresos, estados de mesa, múltiples cuentas activas y las cinco señales de atención priorizadas."
+---
+
+En Menny, cada mesa tiene un QR estático impreso como punto de entrada principal para los comensales. El staff también puede emitir un QR dinámico de invitación cuando lo necesite. Esta página explica los estados de mesa, cómo fluye la cuenta y qué señales de atención prioriza el sistema.
+
+## QR de entrada
+
+Cada mesa carga un **QR estático** impreso y pegado físicamente. Este QR nunca expira ni se agota: es la entrada por defecto para que los comensales escaneen y soliciten unirse a la mesa. El staff o un participante existente debe aprobar la solicitud antes de que el comensal pueda ordenar.
+
+Además, el staff puede generar un **QR dinámico de invitación** desde el panel. Este QR es de corta duración, tiene un límite de usos y lo entrega el mesero directamente a una mesa específica.
+
+## Estados de mesa
+
+Una mesa puede estar en uno de cuatro estados:
+
+| Estado | Significado |
+| --- | --- |
+| **Disponible** | Libre para recibir comensales. |
+| **Ocupada** | Hay comensales activos. Se cambia automáticamente al consumir. |
+| **Reservada** | Bloqueada para una reserva futura. |
+| **Deshabilitada** | Fuera de servicio temporalmente. |
+
+Una mesa sigue marcada como **ocupada** hasta que el staff la libera manualmente después de liquidar y limpiar. Una misma mesa puede tener varias cuentas activas al mismo tiempo, cada una con sus propios pedidos y comensales.
+
+## Cuentas activas por mesa
+
+Cuando un comensal escanea el QR y se le aprueba la entrada, Menny abre una cuenta (`Bill`) vinculada a la mesa. Si llega otro grupo y también se les aprueba, pueden abrir una cuenta adicional en la misma mesa. Cada cuenta es independiente: tiene sus propios pedidos, participantes y pagos.
+
+## Cinco motivos de atención priorizados
+
+El panel del staff muestra una lista de atención ordenada por prioridad. Estos son los cinco motivos, de mayor a menor urgencia:
+
+1. **Alguien pide entrar por el QR de la mesa** (máxima prioridad): una solicitud de entrada pendiente que el staff o un comensal aprobado debe resolver.
+2. **Un comensal llamó al mesero**: el comensal activó la función de llamada desde su teléfono.
+3. **Un pedido listo quedó sin servir**: un platillo marcado como listo en la cocina o barra que no ha sido entregado a la mesa.
+4. **Un intento de pago se atoró**: un pago digital quedó en estado pendiente o requiere acción, o un pago en efectivo o terminal no fue confirmado.
+5. **Mesa liquidada por limpiar**: la cuenta está pagada y la mesa necesita ser liberada para el siguiente grupo.
+
+<Note>
+  El staff debe liberar manualmente una mesa después de que se liquide y limpie. Hasta entonces, la mesa sigue marcada como ocupada y aparece en la lista de atención con el motivo "mesa liquidada por limpiar".
+</Note>

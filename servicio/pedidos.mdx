@@ -1,0 +1,52 @@
+---
+title: "Ciclo de vida del pedido en Menny"
+description: "Descubre cómo funciona el ciclo de vida de un pedido en Menny, desde el borrador hasta servido. Incluye estados, ediciones concurrentes y asignación de estaciones."
+sidebarTitle: "Pedidos"
+---
+
+En Menny, cada pedido pertenece a exactamente una cuenta y no puede moverse a otra. Desde que un comensal o mesero lo crea hasta que llega a la mesa, el pedido atraviesa un ciclo de vida claro que coordina a comensales, meseros y cocina.
+
+## Estados del pedido
+
+<Steps>
+  <Step title="draft">
+    El pedido está en construcción. El comensal o mesero puede agregar, quitar o modificar items. Aún no se envía a cocina.
+  </Step>
+  <Step title="submitted">
+    El pedido se envió a cocina. En este punto, el comensal ya no puede editarlo directamente.
+  </Step>
+  <Step title="accepted">
+    La cocina o el staff confirmó que recibió el pedido y lo aceptó para preparación.
+  </Step>
+  <Step title="in_progress">
+    La estación asignada comenzó a preparar el pedido. Este estado se dispara cuando la cocina empieza a trabajar.
+  </Step>
+  <Step title="ready">
+    El pedido está listo para servir. Si queda mucho tiempo en este estado sin salir, se dispara el motivo de atención "pedido listo sin servir".
+  </Step>
+  <Step title="served">
+    El pedido llegó a la mesa. Este es el estado terminal operativo.
+  </Step>
+</Steps>
+
+Consulta la referencia completa de estados en [Estados](referencia/estados).
+
+## Ediciones concurrentes
+
+Mientras un pedido está en estado editable (principalmente `draft`), un mesero puede sobreescribir la selección en progreso de un comensal antes de que este la envíe. Menny resuelve estas ediciones concurrentes con una estrategia de last write wins silencioso: la última acción guardada prevalece sin bloqueos ni conflictos visibles. Esto evita que un mesero tenga que esperar a que el comensal termine de armar su pedido para hacer ajustes.
+
+Una vez que el pedido pasa a `submitted`, ya no es editable por comensales. Las modificaciones posteriores requieren intervención del staff.
+
+## Asignación de estación
+
+Cada pedido se asigna a una estación en el momento de su creación o envío. La estación determina qué área de la cocina o barra se encarga de prepararlo. Si un pedido necesita cambiar de estación después de ser aceptado, esa reasignación manual está identificada como mejora para una fase posterior. Hoy, la estación original se mantiene durante todo el ciclo.
+
+## Relación con la cuenta
+
+Un pedido nunca cambia de cuenta. Si un comensal se equivoca de mesa o quiere transferir algo, el staff debe cancelar el pedido original y crear uno nuevo en la cuenta correcta. Esta regla mantiene la trazabilidad y evita que items pagados queden huérfanos.
+
+## Próximos pasos
+
+- Entiende cómo se coordinan las estaciones de preparación en [Cocina y estaciones](servicio/cocina-y-estaciones).
+- Aprende cómo los comensales pagan sus items en [Pagar en la mesa](comensal/pagar-en-la-mesa).
+- Revisa los estados técnicos en [Estados](referencia/estados).
